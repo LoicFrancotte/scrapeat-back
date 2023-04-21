@@ -1,14 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "NodeNext",
-    "strict": true,
-    "moduleResolution": "NodeNext",
-    "sourceMap": true,
-    "esModuleInterop": true,
+    "rootDirs": ["src"],
     "outDir": "dist",
-    "typeRoots": ["./node_modules/@types"]
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+    "lib": ["es2020"],
+    "target": "es2020",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "types": ["node"]
+  }
 }
