@@ -1,8 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from '@apollo/server/standalone';
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-dotenv.config();
+import 'dotenv/config';
 
 import typeDefs from "./graphql/typeDefs.js";
 import resolvers from "./graphql/resolvers.js";
