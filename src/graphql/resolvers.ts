@@ -1,5 +1,5 @@
 import Recipe from "../models/recipeModels.js";
-import { scrapeMarmiton } from '../script/scrapeMarmiton';
+import { scrapeMarmiton } from '../script/scrapeMarmiton.js';
 
 const resolvers = {
   Query: {
