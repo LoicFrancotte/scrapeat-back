@@ -1,10 +1,7 @@
 import puppeteer from 'puppeteer';
 
 (async () => {
-  const browser = await puppeteer.launch({
-    headless: false,
-    defaultViewport: false,
-  });
+  const browser = await puppeteer.launch();
 
   const page = await browser.newPage();
 
