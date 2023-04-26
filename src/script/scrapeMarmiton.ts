@@ -1,15 +1,10 @@
 import puppeteer from 'puppeteer';
 
 export async function scrapeMarmiton(url) {
-  const browser = await puppeteer.launch({
-    headless: true,
-    defaultViewport: null,
-  });
+  const browser = await puppeteer.launch();
 
   const page = await browser.newPage();
-
   await page.goto(url);
-  await page.click('#didomi-notice-agree-button');
 
   const recipe = await page.evaluate(() => {
     const title = document.querySelector('.SHRD__sc-10plygc-0.itJBWW');
@@ -36,8 +31,8 @@ export async function scrapeMarmiton(url) {
     return {
       title: title.textContent,
       ingredients: ingredientsList,
+      ustensiles: ustensilesList,
       steps: stepsList,
-      ustensiles: ustensilesList
     };
   });
 
