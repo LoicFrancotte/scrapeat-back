@@ -15,6 +15,7 @@ export const typeDefs = gql`
   type Query {
     getRecipe(id: ID!): Recipe!
     getRecipes: [Recipe!]!
+    scrapeMarmitonRecipe(url: String!): ScrapedRecipe!
   }
 
   type Mutation {
@@ -32,6 +33,13 @@ export const typeDefs = gql`
       recipe: String
     ): Recipe!
     deleteRecipe(id: ID!): ID
+  }
+
+  type ScrapedRecipe {
+    title: String!
+    ingredients: [String!]!
+    steps: [String!]!
+    ustensiles: [String!]!
   }
 `;
 
