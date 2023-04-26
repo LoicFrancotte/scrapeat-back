@@ -1,4 +1,5 @@
 import Recipe from "../models/recipeModels.js";
+import { scrapeMarmiton } from '../script/scrapeMarmiton';
 
 const resolvers = {
   Query: {
@@ -14,6 +15,14 @@ const resolvers = {
       try {
         const recipes = await Recipe.find();
         return recipes;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    scrapeMarmitonRecipe: async (_, { url }) => {
+      try {
+        const scrapedRecipe = await scrapeMarmiton(url);
+        return scrapedRecipe;
       } catch (error) {
         throw new Error(error);
       }

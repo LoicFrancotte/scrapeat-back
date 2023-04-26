@@ -1,16 +1,15 @@
 import puppeteer from 'puppeteer';
 
-(async () => {
+export async function scrapeMarmiton(url) {
   const browser = await puppeteer.launch({
-    headless: false,
-    defaultViewport: false,
+    headless: true,
+    defaultViewport: null,
   });
 
   const page = await browser.newPage();
 
-  await page.goto('https://www.marmiton.org/recettes/recette_gateau-au-yaourt-et-pepites-de-chocolat-nestle-dessert_534481.aspx');
-
-  await page.click('#didomi-notice-agree-button')
+  await page.goto(url);
+  await page.click('#didomi-notice-agree-button');
 
   const recipe = await page.evaluate(() => {
     const title = document.querySelector('.SHRD__sc-10plygc-0.itJBWW');
@@ -42,19 +41,6 @@ import puppeteer from 'puppeteer';
     };
   });
 
-  console.log(`${recipe.title}\n\nIngrédients:`);
-  recipe.ingredients.forEach(ingredient => {
-    console.log(ingredient);
-  });
-
-  console.log('\nUstensiles:');
-  recipe.ustensiles.forEach(ustensile => {
-    console.log(ustensile);
-  });
-
-  console.log('\n');
-  recipe.steps.forEach(step => {
-    console.log(`${step}\n`);
-  });
-
-})();
+  await browser.close();
+  return recipe;
+}
