@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@apollo/server": "^4.6.0",
+    "@apollo/server": "^4.7.0",
     "@graphql-tools/schema": "^9.0.18",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
