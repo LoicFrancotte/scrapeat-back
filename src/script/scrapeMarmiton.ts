@@ -1,7 +1,13 @@
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
+import chromium from 'chrome-aws-lambda';
 
 export async function scrapeMarmiton(url) {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    executablePath: await chromium.executablePath,
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    headless: chromium.headless,
+  });
 
   const page = await browser.newPage();
   await page.goto(url);
@@ -39,3 +45,11 @@ export async function scrapeMarmiton(url) {
   await browser.close();
   return recipe;
 }
+
+// Exemple d'utilisation de la fonction scrapeMarmiton()
+// async function main() {
+//   const url = 'https://www.marmiton.org/recettes/recette_bolognaise-aux-lentilles_27842.aspx';
+//   const recipe = await scrapeMarmiton(url);
+//   console.log(recipe);
+// }
+// main();

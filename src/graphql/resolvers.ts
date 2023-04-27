@@ -1,5 +1,27 @@
 import Recipe from "../models/recipeModels.js";
 import { scrapeMarmiton } from '../script/scrapeMarmiton.js';
+import { UserInputError } from "apollo-server-errors";
+import passport from "../auth/authFacebook.js";
+
+interface User {
+  id: string;
+  username: string;
+  email: string;
+  name: string;
+}
+
+const loginUserWithFacebook = (req) =>
+  new Promise<User>((resolve, reject) => {
+    passport.authenticate("facebook", { scope: ["email"] }, (err, user) => {
+      if (err) {
+        reject(err);
+      } else if (!user) {
+        reject(new UserInputError("User not found"));
+      } else {
+        resolve(user as User);
+      }
+    })(req);
+  });
 
 const resolvers = {
   Query: {
@@ -63,6 +85,15 @@ const resolvers = {
       } catch (error) {
         throw new Error(error);
       }
+    },
+    loginWithFacebook: async (_, __, { req }) => {
+      const user = await loginUserWithFacebook(req);
+      return {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        name: user.name,
+      };
     },
   },
 };
