@@ -3,6 +3,13 @@ import gql from 'graphql-tag';
 export const typeDefs = gql`
   scalar DateTime
 
+  type User {
+    id: ID!
+    username: String!
+    email: String!
+    name: String!
+  }
+
   type Recipe {
     id: ID!
     user: ID!
@@ -33,6 +40,7 @@ export const typeDefs = gql`
       recipe: String
     ): Recipe!
     deleteRecipe(id: ID!): ID
+    loginWithFacebook: User!
   }
 
   type ScrapedRecipe {
