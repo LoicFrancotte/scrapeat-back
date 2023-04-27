@@ -40,7 +40,6 @@ export const typeDefs = gql`
       recipe: String
     ): Recipe!
     deleteRecipe(id: ID!): ID
-    loginWithFacebook: User!
   }
 
   type ScrapedRecipe {
