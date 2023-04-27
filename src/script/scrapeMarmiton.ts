@@ -1,13 +1,7 @@
-import puppeteer from 'puppeteer-core';
-import chromium from 'chrome-aws-lambda';
+import puppeteer from 'puppeteer';
 
 export async function scrapeMarmiton(url) {
-  const browser = await puppeteer.launch({
-    executablePath: await chromium.executablePath,
-    args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
-    headless: chromium.headless,
-  });
+  const browser = await puppeteer.launch();
 
   const page = await browser.newPage();
   await page.goto(url);
