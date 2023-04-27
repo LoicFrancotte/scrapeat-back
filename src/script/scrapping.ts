@@ -7,8 +7,6 @@ import puppeteer from 'puppeteer';
 
   await page.goto('https://www.marmiton.org/recettes/recette_gateau-au-yaourt-et-pepites-de-chocolat-nestle-dessert_534481.aspx');
 
-  await page.click('#didomi-notice-agree-button')
-
   const recipe = await page.evaluate(() => {
     const title = document.querySelector('.SHRD__sc-10plygc-0.itJBWW');
     const ingredients = document.querySelectorAll('.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-3.MuiGrid-grid-sm-3');
