@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const typeDefs = gql`
   scalar DateTime
@@ -48,6 +48,8 @@ export const typeDefs = gql`
     ): Recipe!
     deleteRecipe(id: ID!): ID
     authenticateFacebook(accessToken: String!): AuthPayload!
+    authenticateGoogle(accessToken: String!): AuthPayload!
+    authenticateApple(accessToken: String!): AuthPayload!
   }
 
   type ScrapedRecipe {

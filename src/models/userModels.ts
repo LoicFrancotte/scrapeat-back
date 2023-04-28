@@ -5,6 +5,9 @@ const userSchema = new mongoose.Schema(
     facebookId: {
       type: String,
     },
+    googleId: {
+      type: String,
+    },
     username: {
       type: String,
       unique: true,
