@@ -24,6 +24,13 @@ export const typeDefs = gql`
     user: User!
   }
 
+  type ScrapedRecipe {
+    title: String!
+    ingredients: [String!]!
+    steps: [String!]!
+    ustensiles: [String!]!
+  }
+
   type Query {
     getUser(id: ID!): User!
     getUsers: [User!]!
