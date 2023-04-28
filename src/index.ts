@@ -19,6 +19,8 @@ import resolvers from "./graphql/resolvers.js";
 
 import User from "./models/userModels.js";
 
+const PORT = process.env.PORT
+
 interface MyContext {
   token?: String;
 }
@@ -98,6 +100,10 @@ mongoose.connection.once("open", () => {
 });
 
 const app = express();
+
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
 
 app.use(
   session({
