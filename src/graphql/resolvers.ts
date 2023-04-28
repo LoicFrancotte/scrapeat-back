@@ -1,8 +1,33 @@
+import jwt from 'jsonwebtoken';
+import axios from 'axios';
 import Recipe from "../models/recipeModels.js";
 import { scrapeMarmiton } from '../script/scrapeMarmiton.js';
+import User from '../models/userModels.js';
+
+const createToken = (user) => {
+  return jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+    expiresIn: '30d',
+  });
+};
 
 const resolvers = {
   Query: {
+    getUser: async (_, { id }) => {
+      try {
+        const user = await User.findById(id);
+        return user;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    getUsers: async () => {
+      try {
+        const users = await User.find();
+        return users;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
     getRecipe: async (_, { id }) => {
       try {
         const recipe = await Recipe.findById(id);
@@ -60,6 +85,34 @@ const resolvers = {
           throw new Error('Recipe not found');
         }
         return id;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    authenticateFacebook: async (_, { accessToken }) => {
+      try {
+        const { data } = await axios.get(
+          `https://graph.facebook.com/me?fields=id,email,first_name,last_name&access_token=${accessToken}`
+        );
+        if (!data) {
+          throw new Error('Failed to authenticate with Facebook.');
+        }
+        const { id, email, first_name, last_name } = data;
+        let user = await User.findOne({ accountId: id });
+        if (!user) {
+          user = await User.create({
+            accountId: id,
+            username: `${first_name} ${last_name}`,
+            email,
+            name: `${first_name} ${last_name}`,
+            provider: 'facebook',
+          });
+        }
+        const token = createToken(user);
+        return {
+          token,
+          user,
+        };
       } catch (error) {
         throw new Error(error);
       }

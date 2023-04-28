@@ -19,7 +19,14 @@ export const typeDefs = gql`
     createdAt: DateTime!
   }
 
+  type AuthPayload {
+    token: String!
+    user: User!
+  }
+
   type Query {
+    getUser(id: ID!): User!
+    getUsers: [User!]!
     getRecipe(id: ID!): Recipe!
     getRecipes: [Recipe!]!
     scrapeMarmitonRecipe(url: String!): ScrapedRecipe!
@@ -40,6 +47,7 @@ export const typeDefs = gql`
       recipe: String
     ): Recipe!
     deleteRecipe(id: ID!): ID
+    authenticateFacebook(accessToken: String!): AuthPayload!
   }
 
   type ScrapedRecipe {
