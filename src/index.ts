@@ -107,10 +107,6 @@ app.use(
   })
 );
 
-app.get('/health', (req, res) => {
-  res.sendStatus(200);
-});
-
 app.use(passport.initialize());
 app.use(passport.session());
 
