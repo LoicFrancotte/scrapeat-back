@@ -1,12 +1,12 @@
-import jwt from 'jsonwebtoken';
-import axios from 'axios';
+import jwt from "jsonwebtoken";
+import axios from "axios";
 import Recipe from "../models/recipeModels.js";
-import { scrapeMarmiton } from '../script/scrapeMarmiton.js';
-import User from '../models/userModels.js';
+import { scrapeMarmiton } from "../script/scrapeMarmiton.js";
+import User from "../models/userModels.js";
 
 const createToken = (user) => {
   return jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-    expiresIn: '30d',
+    expiresIn: "30d",
   });
 };
 
@@ -71,7 +71,7 @@ const resolvers = {
           { new: true, omitUndefined: true }
         );
         if (!updatedRecipe) {
-          throw new Error('Recipe not found');
+          throw new Error("Recipe not found");
         }
         return updatedRecipe;
       } catch (error) {
@@ -82,7 +82,7 @@ const resolvers = {
       try {
         const deletedRecipe = await Recipe.findByIdAndDelete(id);
         if (!deletedRecipe) {
-          throw new Error('Recipe not found');
+          throw new Error("Recipe not found");
         }
         return id;
       } catch (error) {
@@ -95,7 +95,7 @@ const resolvers = {
           `https://graph.facebook.com/me?fields=id,email,first_name,last_name&access_token=${accessToken}`
         );
         if (!data) {
-          throw new Error('Failed to authenticate with Facebook.');
+          throw new Error("Failed to authenticate with Facebook.");
         }
         const { id, email, first_name, last_name } = data;
         let user = await User.findOne({ accountId: id });
@@ -105,7 +105,35 @@ const resolvers = {
             username: `${first_name} ${last_name}`,
             email,
             name: `${first_name} ${last_name}`,
-            provider: 'facebook',
+            provider: "facebook",
+          });
+        }
+        const token = createToken(user);
+        return {
+          token,
+          user,
+        };
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    authenticateGoogle: async (_, { accessToken }) => {
+      try {
+        const { data } = await axios.get(
+          `https://graph.google.com/me?fields=id,email,first_name,last_name&access_token=${accessToken}`
+        );
+        if (!data) {
+          throw new Error("Failed to authenticate with Facebook.");
+        }
+        const { id, email, first_name, last_name } = data;
+        let user = await User.findOne({ accountId: id });
+        if (!user) {
+          user = await User.create({
+            accountId: id,
+            username: `${first_name} ${last_name}`,
+            email,
+            name: `${first_name} ${last_name}`,
+            provider: "google",
           });
         }
         const token = createToken(user);

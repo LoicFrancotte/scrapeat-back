@@ -1,35 +1,41 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema } from "mongoose";
 
-const userSchema = new mongoose.Schema({
-  facebookId: {
-    type: String,
+const userSchema = new mongoose.Schema(
+  {
+    facebookId: {
+      type: String,
+    },
+    googleId: {
+      type: String,
+    },
+    username: {
+      type: String,
+      unique: true,
+    },
+    email: {
+      type: String,
+      unique: true,
+    },
+    //accountId can be google Id, facebook Id, apple Id etc.
+    accountId: {
+      type: String,
+    },
+    name: {
+      type: String,
+    },
+    provider: {
+      type: String,
+    },
+    recipes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Recipe",
+      },
+    ],
   },
-  username: {
-    type: String,
-    unique : true,
-  },
-  email: {
-    type: String,
-    unique : true,
-  },
-  //accountId can be google Id, facebook Id, apple Id etc.
-  accountId: {
-    type: String,
-  },
-  name: {
-    type: String,
-  },
-  provider: {
-    type: String,
-  },
-  recipes: [{
-    type: Schema.Types.ObjectId,
-    ref: "Recipe",
-  }],
-},
   {
     timestamps: true,
   }
 );
 
-export default mongoose.model('User', userSchema);
+export default mongoose.model("User", userSchema);
