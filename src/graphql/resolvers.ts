@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import axios from "axios";
 import Recipe from "../models/recipeModels.js";
-import { scrapeMarmiton } from "../script/scrapeMarmiton.js";
+// import { scrapeMarmiton } from "../script/scrapeMarmiton.js";
 import User from "../models/userModels.js";
 
 const createToken = (user) => {
@@ -44,14 +44,14 @@ const resolvers = {
         throw new Error(error);
       }
     },
-    scrapeMarmitonRecipe: async (_, { url }) => {
-      try {
-        const scrapedRecipe = await scrapeMarmiton(url);
-        return scrapedRecipe;
-      } catch (error) {
-        throw new Error(error);
-      }
-    },
+    // scrapeMarmitonRecipe: async (_, { url }) => {
+    //   try {
+    //     const scrapedRecipe = await scrapeMarmiton(url);
+    //     return scrapedRecipe;
+    //   } catch (error) {
+    //     throw new Error(error);
+    //   }
+    // },
   },
   Mutation: {
     createRecipe: async (_, { user, title, description, recipe }) => {
