@@ -28,7 +28,7 @@ interface MyContext {
 const facebookOptions = {
   clientID: process.env.FACEBOOK_APP_ID,
   clientSecret: process.env.FACEBOOK_APP_SECRET,
-  callbackURL: "http://localhost:3001/auth/facebook/callback",
+  callbackURL: "https://recipe-scrapping-app-backend-us9cy.ondigitalocean.app/auth/facebook/callback",
   profileFields: ["id", "email", "first_name", "last_name"],
 };
 
@@ -55,7 +55,7 @@ passport.use(new FacebookStrategy(facebookOptions, facebookCallback));
 const googleOptions = {
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "http://localhost:3001/auth/google/callback",
+  callbackURL: "https://recipe-scrapping-app-backend-us9cy.ondigitalocean.app/auth/google/callback",
 };
 
 const googleCallback = async (accessToken, refreshToken, profile, done) => {
@@ -123,8 +123,8 @@ app.get(
 app.get(
   "/auth/facebook/callback",
   passport.authenticate("facebook", {
-    successRedirect: "http://localhost:3001/graphql",
-    failureRedirect: "http://localhost:3001/graphql",
+    successRedirect: "https://recipe-scrapping-app-backend-us9cy.ondigitalocean.app/graphql",
+    failureRedirect: "https://recipe-scrapping-app-backend-us9cy.ondigitalocean.app/graphql",
   })
 );
 //Google
@@ -135,8 +135,8 @@ app.get(
 app.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    successRedirect: "http://localhost:3001/graphql",
-    failureRedirect: "http://localhost:3001/graphql",
+    successRedirect: "https://recipe-scrapping-app-backend-us9cy.ondigitalocean.app/graphql",
+    failureRedirect: "https://recipe-scrapping-app-backend-us9cy.ondigitalocean.app/graphql",
   })
 );
 
