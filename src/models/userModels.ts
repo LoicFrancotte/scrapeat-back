@@ -2,6 +2,9 @@ import mongoose, { Schema } from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
+    facebookId: {
+      type: String,
+    },
     username: {
       type: String,
       unique: true,
