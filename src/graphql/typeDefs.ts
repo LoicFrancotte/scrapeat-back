@@ -36,7 +36,7 @@ export const typeDefs = gql`
     getUsers: [User!]!
     getRecipe(id: ID!): Recipe!
     getRecipes: [Recipe!]!
-    scrapeMarmitonRecipe(url: String!): ScrapedRecipe!
+    scrapeRecipe(url: String!): ScrapedRecipe!
   }
 
   type Mutation {
