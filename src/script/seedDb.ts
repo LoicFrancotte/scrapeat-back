@@ -1,6 +1,5 @@
 import { faker } from '@faker-js/faker';
 import mongoose from "mongoose";
-import { ObjectId } from "mongodb";
 import Recipe from "../models/recipeModels.js";
 import User from "../models/userModels.js";
 import path from 'path';
@@ -32,7 +31,6 @@ const createFakeRecipe = (user) => {
   return {
     user: user._id,
     title: faker.lorem.words(),
-    description: faker.lorem.paragraph(),
     ingredients: Array.from({ length: 5 }, () => faker.lorem.word()),
     steps: Array.from({ length: 5 }, () => faker.lorem.sentence()),
     ustensiles: Array.from({ length: 3 }, () => faker.lorem.word()),
@@ -66,7 +64,7 @@ const seedDatabase = async () => {
     await newUser.save();
   }
 
-  console.log(`🌱 Inserted ${numberOfUsers * numberOfRecipesPerUser} fake recipes into the database.`);
+  console.log(`🌱 Inserted fake recipes into the database.`);
   await mongoose.disconnect();
 };
 
