@@ -57,6 +57,7 @@ export const typeDefs = gql`
     deleteRecipe(id: ID!): ID
     authenticateFacebook(accessToken: String!): AuthPayload!
     authenticateGoogle(accessToken: String!): AuthPayload!
+    scrapeRecipe(url: String!): ScrapedRecipe!
   }
 `;
 
