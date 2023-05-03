@@ -44,36 +44,13 @@ const resolvers = {
         throw new Error(error);
       }
     },
-    // scrapeRecipe: async (_, { url }) => {
-    //   try {
-    //     const scrapedRecipe = await scrapeMarmiton(url);
-    //     return scrapedRecipe;
-    //   } catch (error) {
-    //     throw new Error(error);
-    //   }
-    // },
   },
   Mutation: {
-    createRecipe: async (_, { user, title, description, recipe }) => {
+    createRecipe: async (_, { user, title, ingredients, ustensiles, steps }) => {
       try {
-        const newRecipe = new Recipe({ user, title, description, recipe });
+        const newRecipe = new Recipe({ user, title, ingredients, ustensiles, steps });
         await newRecipe.save();
         return newRecipe;
-      } catch (error) {
-        throw new Error(error);
-      }
-    },
-    updateRecipe: async (_, { id, user, title, description, recipe }) => {
-      try {
-        const updatedRecipe = await Recipe.findByIdAndUpdate(
-          id,
-          { user, title, description, recipe },
-          { new: true, omitUndefined: true }
-        );
-        if (!updatedRecipe) {
-          throw new Error("Recipe not found");
-        }
-        return updatedRecipe;
       } catch (error) {
         throw new Error(error);
       }
