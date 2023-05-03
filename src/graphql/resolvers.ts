@@ -145,6 +145,23 @@ const resolvers = {
         throw new Error(error);
       }
     },
+    saveScrapedRecipe: async (_, { user, title, ingredients, steps, ustensiles }) => {
+      try {
+        const newRecipe = new Recipe({ user, title, ingredients, steps, ustensiles });
+        await newRecipe.save();
+        return newRecipe;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    scrapeRecipe: async (_, { url }) => {
+      try {
+        const scrapedRecipe = await scrapeMarmiton(url);
+        return scrapedRecipe;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
   },
 };
 

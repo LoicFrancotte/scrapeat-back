@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import mongoose from "mongoose";
 import { ObjectId } from "mongodb";
 import Recipe from "../models/recipeModels.js";
+import User from "../models/userModels.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
@@ -15,14 +16,26 @@ dotenv.config({ path: envPath });
 // Clear the database
 const clearDatabase = async () => {
   await Recipe.deleteMany({});
+  await User.deleteMany({});
 };
 
-const createFakeRecipe = () => {
+const createFakeUser = () => {
   return {
-    user: new ObjectId(),
+    username: faker.internet.userName(),
+    email: faker.internet.email(),
+    name: faker.name.fullName(),
+    provider: "faker",
+  };
+};
+
+const createFakeRecipe = (user) => {
+  return {
+    user: user._id,
     title: faker.lorem.words(),
     description: faker.lorem.paragraph(),
-    recipe: faker.lorem.paragraphs(),
+    ingredients: Array.from({ length: 5 }, () => faker.lorem.word()),
+    steps: Array.from({ length: 5 }, () => faker.lorem.sentence()),
+    ustensiles: Array.from({ length: 3 }, () => faker.lorem.word()),
   };
 };
 
@@ -32,15 +45,28 @@ const seedDatabase = async () => {
   await clearDatabase();
   console.log('🌱 Database cleared');
 
-  const numberOfRecipes = 10; // Le nombre de recettes à générer
+  const numberOfUsers = 250; // Le nombre d'utilisateurs à générer
+  const numberOfRecipesPerUser = 4; // Le nombre de recettes par utilisateur
 
-  for (let i = 0; i < numberOfRecipes; i++) {
-    const fakeRecipe = createFakeRecipe();
-    const newRecipe = new Recipe(fakeRecipe);
-    await newRecipe.save();
+  for (let i = 0; i < numberOfUsers; i++) {
+    const fakeUser = createFakeUser();
+    const newUser = new User(fakeUser);
+    await newUser.save();
+
+    for (let j = 0; j < numberOfRecipesPerUser; j++) {
+      const fakeRecipe = createFakeRecipe(newUser);
+      const newRecipe = new Recipe(fakeRecipe);
+      await newRecipe.save();
+
+      // Ajoute l'ID de la recette au tableau de recettes de l'utilisateur
+      newUser.recipes.push(newRecipe._id);
+    }
+
+    // Met à jour l'utilisateur avec les nouveaux IDs de recettes
+    await newUser.save();
   }
 
-  console.log(`🌱 Inserted ${numberOfRecipes} fake recipes into the database.`);
+  console.log(`🌱 Inserted ${numberOfUsers * numberOfRecipesPerUser} fake recipes into the database.`);
   await mongoose.disconnect();
 };
 
