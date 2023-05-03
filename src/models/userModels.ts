@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
     facebookId: {
       type: String,
@@ -16,7 +16,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
-    //accountId can be google Id, facebook Id, apple Id etc.
     accountId: {
       type: String,
     },

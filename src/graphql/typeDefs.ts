@@ -40,6 +40,13 @@ export const typeDefs = gql`
   }
 
   type Mutation {
+    saveScrapedRecipe(
+      user: ID!
+      title: String!
+      ingredients: [String!]!
+      steps: [String!]!
+      ustensiles: [String!]!
+    ): Recipe!
     createRecipe(
       user: ID!
       title: String!
