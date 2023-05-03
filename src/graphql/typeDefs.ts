@@ -40,38 +40,32 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    saveScrapedRecipe(
-      user: ID!
-      title: String!
-      ingredients: [String!]!
-      steps: [String!]!
-      ustensiles: [String!]!
-    ): Recipe!
-    createRecipe(
-      user: ID!
-      title: String!
-      description: String!
-      recipe: String!
-    ): Recipe!
-    updateRecipe(
-      id: ID!
-      user: ID
-      title: String
-      description: String
-      recipe: String
-    ): Recipe!
-    deleteRecipe(id: ID!): ID
-    authenticateFacebook(accessToken: String!): AuthPayload!
-    authenticateGoogle(accessToken: String!): AuthPayload!
-    authenticateApple(accessToken: String!): AuthPayload!
-  }
-
-  type ScrapedRecipe {
+  saveScrapedRecipe(
+    user: ID!
     title: String!
     ingredients: [String!]!
     steps: [String!]!
     ustensiles: [String!]!
-  }
+  ): Recipe!
+  createRecipe(
+    user: ID!
+    title: String!
+    description: String!
+    recipe: String!
+  ): Recipe!
+  updateRecipe(
+    id: ID!
+    user: ID
+    title: String
+    description: String
+    recipe: String
+  ): Recipe!
+  deleteRecipe(id: ID!): ID
+  authenticateFacebook(accessToken: String!): AuthPayload!
+  authenticateGoogle(accessToken: String!): AuthPayload!
+  authenticateApple(accessToken: String!): AuthPayload!
+  scrapeRecipe(url: String!): ScrapedRecipe!
+}
 `;
 
 export default typeDefs;
