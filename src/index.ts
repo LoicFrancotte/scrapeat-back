@@ -1,3 +1,5 @@
+import path, { join } from "path";
+import url from "url";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
@@ -10,7 +12,9 @@ import http from "http";
 import cors from "cors";
 import pkg from "body-parser";
 const { json } = pkg;
-import "dotenv/config";
+// import "dotenv/config";
+// import "dotenv/config";
+import dotenv from "dotenv";
 import { createServer } from "http";
 import GoogleStrategy from "passport-google-oauth20";
 
@@ -20,6 +24,16 @@ import resolvers from "./graphql/resolvers.js";
 import User from "./models/userModels.js";
 
 const PORT = process.env.PORT;
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+if (process.env.NODE_ENV === "production") {
+  dotenv.config({ path: join(__dirname, "../.env") });
+} else {
+  dotenv.config({ path: join(__dirname, "../.env.development") });
+}
+
+console.log(process.env.ENV, "env");
 
 interface MyContext {
   token?: String;
