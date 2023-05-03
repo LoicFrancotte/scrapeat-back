@@ -44,14 +44,14 @@ const resolvers = {
         throw new Error(error);
       }
     },
-    scrapeRecipe: async (_, { url }) => {
-      try {
-        const scrapedRecipe = await scrapeMarmiton(url);
-        return scrapedRecipe;
-      } catch (error) {
-        throw new Error(error);
-      }
-    },
+    // scrapeRecipe: async (_, { url }) => {
+    //   try {
+    //     const scrapedRecipe = await scrapeMarmiton(url);
+    //     return scrapedRecipe;
+    //   } catch (error) {
+    //     throw new Error(error);
+    //   }
+    // },
   },
   Mutation: {
     createRecipe: async (_, { user, title, description, recipe }) => {
