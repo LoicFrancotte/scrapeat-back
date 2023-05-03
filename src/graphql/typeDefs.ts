@@ -14,8 +14,9 @@ export const typeDefs = gql`
     id: ID!
     user: ID!
     title: String!
-    description: String!
-    recipe: String!
+    ingredients: [String!]!
+    ustensiles: [String!]!
+    steps: [String!]!
     createdAt: DateTime!
   }
 
@@ -40,32 +41,24 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-  saveScrapedRecipe(
-    user: ID!
-    title: String!
-    ingredients: [String!]!
-    steps: [String!]!
-    ustensiles: [String!]!
-  ): Recipe!
-  createRecipe(
-    user: ID!
-    title: String!
-    description: String!
-    recipe: String!
-  ): Recipe!
-  updateRecipe(
-    id: ID!
-    user: ID
-    title: String
-    description: String
-    recipe: String
-  ): Recipe!
-  deleteRecipe(id: ID!): ID
-  authenticateFacebook(accessToken: String!): AuthPayload!
-  authenticateGoogle(accessToken: String!): AuthPayload!
-  authenticateApple(accessToken: String!): AuthPayload!
-  scrapeRecipe(url: String!): ScrapedRecipe!
-}
+    saveScrapedRecipe(
+      user: ID!
+      title: String!
+      ingredients: [String!]!
+      steps: [String!]!
+      ustensiles: [String!]!
+    ): Recipe!
+    createRecipe(
+      user: ID!
+      title: String!
+      ingredients: [String!]!
+      ustensiles: [String!]!
+      steps: [String!]!
+    ): Recipe!
+    deleteRecipe(id: ID!): ID
+    authenticateFacebook(accessToken: String!): AuthPayload!
+    authenticateGoogle(accessToken: String!): AuthPayload!
+  }
 `;
 
 export default typeDefs;
