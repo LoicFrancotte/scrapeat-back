@@ -8,6 +8,9 @@ export const typeDefs = gql`
     username: String!
     email: String!
     name: String!
+    provider: String!
+    recipes: [Recipe!]!
+    createdAt: DateTime!
   }
 
   type Recipe {
