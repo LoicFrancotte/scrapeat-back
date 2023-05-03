@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "nodemon --watch 'src/**' --exec 'ts-node' src/index.ts -e 'ts,graphql,json,js'",
+    "dev": "nodemon --watch 'src/**' --exec 'ts-node' --esm src/index.ts -e 'ts,graphql,json,js'",
     "compile": "tsc",
     "dev2": "npm run compile && node ./dist/index.js"
   },
