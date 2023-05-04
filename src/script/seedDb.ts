@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import mongoose from "mongoose";
-import Recipe from "../models/recipeModels.js";
-import User from "../models/userModels.js";
+import Recipe, { IRecipe } from "../models/recipeModels.js";
+import User, { IUser } from "../models/userModels.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
@@ -18,7 +18,7 @@ const clearDatabase = async () => {
   await User.deleteMany({});
 };
 
-const createFakeUser = () => {
+const createFakeUser = (): Partial<IUser> => {
   return {
     username: faker.internet.userName(),
     email: faker.internet.email(),
@@ -27,7 +27,7 @@ const createFakeUser = () => {
   };
 };
 
-const createFakeRecipe = (user: any) => {
+const createFakeRecipe = (user: IUser): Partial<IRecipe> => {
   return {
     user: user._id,
     title: faker.lorem.words(),
@@ -43,8 +43,8 @@ const seedDatabase = async () => {
   await clearDatabase();
   console.log('🌱 Database cleared');
 
-  const numberOfUsers = 250; // Le nombre d'utilisateurs à générer
-  const numberOfRecipesPerUser = 4; // Le nombre de recettes par utilisateur
+  const numberOfUsers = 250;
+  const numberOfRecipesPerUser = 4;
 
   for (let i = 0; i < numberOfUsers; i++) {
     const fakeUser = createFakeUser();
@@ -56,11 +56,9 @@ const seedDatabase = async () => {
       const newRecipe = new Recipe(fakeRecipe);
       await newRecipe.save();
 
-      // Ajoute l'ID de la recette au tableau de recettes de l'utilisateur
-      newUser.recipes.push(newRecipe._id);
+      newUser.recipes?.push(newRecipe._id);
     }
 
-    // Met à jour l'utilisateur avec les nouveaux IDs de recettes
     await newUser.save();
   }
 

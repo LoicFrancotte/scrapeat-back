@@ -1,4 +1,12 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
+
+export interface IRecipe extends Document {
+  user: string;
+  title: string;
+  ingredients: string[];
+  steps: string[];
+  ustensiles: string[];
+}
 
 const recipeSchema = new Schema({
   user: {
@@ -27,10 +35,8 @@ const recipeSchema = new Schema({
       required: true
     }
   ],
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
+}, {
+  timestamps: true,
 });
 
-export default mongoose.model("Recipe", recipeSchema);
+export default mongoose.model<IRecipe>("Recipe", recipeSchema);
