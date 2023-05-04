@@ -1,4 +1,15 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
+
+export interface IUser extends Document {
+  facebookId?: string;
+  googleId?: string;
+  username?: string;
+  email?: string;
+  accountId?: string;
+  name?: string;
+  provider?: string;
+  recipes?: string[];
+}
 
 const userSchema = new Schema(
   {
@@ -37,4 +48,4 @@ const userSchema = new Schema(
   }
 );
 
-export default mongoose.model("User", userSchema);
+export default mongoose.model<IUser>("User", userSchema);
