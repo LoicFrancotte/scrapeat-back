@@ -27,7 +27,7 @@ const createFakeUser = () => {
   };
 };
 
-const createFakeRecipe = (user) => {
+const createFakeRecipe = (user: any) => {
   return {
     user: user._id,
     title: faker.lorem.words(),
