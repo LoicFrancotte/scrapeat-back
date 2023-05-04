@@ -11,41 +11,38 @@ export interface IUser extends Document {
   recipes?: string[];
 }
 
-const userSchema = new Schema(
-  {
-    facebookId: {
-      type: String,
-    },
-    googleId: {
-      type: String,
-    },
-    username: {
-      type: String,
-      unique: true,
-    },
-    email: {
-      type: String,
-      unique: true,
-    },
-    accountId: {
-      type: String,
-    },
-    name: {
-      type: String,
-    },
-    provider: {
-      type: String,
-    },
-    recipes: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Recipe",
-      },
-    ],
+const userSchema = new Schema({
+  facebookId: {
+    type: String,
   },
-  {
-    timestamps: true,
-  }
-);
+  googleId: {
+    type: String,
+  },
+  username: {
+    type: String,
+    unique: true,
+  },
+  email: {
+    type: String,
+    unique: true,
+  },
+  accountId: {
+    type: String,
+  },
+  name: {
+    type: String,
+  },
+  provider: {
+    type: String,
+  },
+  recipes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Recipe",
+    },
+  ],
+}, {
+  timestamps: true,
+});
 
 export default mongoose.model<IUser>("User", userSchema);
