@@ -1,18 +1,56 @@
 import jwt from "jsonwebtoken";
 import axios from "axios";
+import { Document } from "mongoose";
 import Recipe from "../models/recipeModels.js";
 import { scrapeMarmiton } from "../script/scr.js";
 import User from "../models/userModels.js";
 
-const createToken = (user) => {
-  return jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+export interface IUser {
+  id: string;
+  accountId: string;
+  username: string;
+  email: string;
+  name: string;
+  provider: string;
+}
+
+interface IRecipeInput {
+  user: string;
+  title: string;
+  ingredients: string[];
+  ustensiles: string[];
+  steps: string[];
+}
+
+interface IFacebookAuthInput {
+  accessToken: string;
+}
+
+interface IGoogleAuthInput {
+  accessToken: string;
+}
+
+interface IScrapedRecipeInput {
+  user: string;
+  title: string;
+  ingredients: string[];
+  steps: string[];
+  ustensiles: string[];
+}
+
+interface IScrapeRecipeInput {
+  url: string;
+}
+
+const createToken = (user: IUser): string => {
+  return jwt.sign({ id: user.id }, process.env.JWT_SECRET!, {
     expiresIn: "30d",
   });
 };
 
 const resolvers = {
   Query: {
-    getUser: async (_, { id }) => {
+    getUser: async (_: any, { id }: { id: string }) => {
       try {
         const user = await User.findById(id);
         return user;
@@ -28,7 +66,7 @@ const resolvers = {
         throw new Error(error);
       }
     },
-    getRecipe: async (_, { id }) => {
+    getRecipe: async (_: any, {id}: { id: string }) => {
       try {
         const recipe = await Recipe.findById(id);
         return recipe;
@@ -46,7 +84,7 @@ const resolvers = {
     },
   },
   Mutation: {
-    createRecipe: async (_, { user, title, ingredients, ustensiles, steps }) => {
+    createRecipe: async (_: any, { user, title, ingredients, ustensiles, steps }: IRecipeInput) => {
       try {
         const newRecipe = new Recipe({ user, title, ingredients, ustensiles, steps });
         await newRecipe.save();
@@ -55,7 +93,7 @@ const resolvers = {
         throw new Error(error);
       }
     },
-    deleteRecipe: async (_, { id }) => {
+    deleteRecipe: async (_: any, { id }: { id: string }) => {
       try {
         const deletedRecipe = await Recipe.findByIdAndDelete(id);
         if (!deletedRecipe) {
@@ -66,7 +104,7 @@ const resolvers = {
         throw new Error(error);
       }
     },
-    authenticateFacebook: async (_, { accessToken }) => {
+    authenticateFacebook: async (_: any, { accessToken }: IFacebookAuthInput) => {
       try {
         const { data } = await axios.get(
           `https://graph.facebook.com/me?fields=id,email,first_name,last_name&access_token=${accessToken}`
@@ -85,7 +123,7 @@ const resolvers = {
             provider: "facebook",
           });
         }
-        const token = createToken(user);
+        const token = createToken(user as unknown as IUser);
         return {
           token,
           user,
@@ -94,7 +132,7 @@ const resolvers = {
         throw new Error(error);
       }
     },
-    authenticateGoogle: async (_, { accessToken }) => {
+    authenticateGoogle: async (_:any, { accessToken }: IGoogleAuthInput) => {
       try {
         const { data } = await axios.get(
           `https://graph.google.com/me?fields=id,email,first_name,last_name&access_token=${accessToken}`
@@ -113,7 +151,7 @@ const resolvers = {
             provider: "google",
           });
         }
-        const token = createToken(user);
+        const token = createToken(user as unknown as IUser);
         return {
           token,
           user,
@@ -122,7 +160,7 @@ const resolvers = {
         throw new Error(error);
       }
     },
-    saveScrapedRecipe: async (_, { user, title, ingredients, steps, ustensiles }) => {
+    saveScrapedRecipe: async (_: any, { user, title, ingredients, ustensiles, steps }: IRecipeInput) => {
       try {
         const newRecipe = new Recipe({ user, title, ingredients, steps, ustensiles });
         await newRecipe.save();
@@ -131,7 +169,7 @@ const resolvers = {
         throw new Error(error);
       }
     },
-    scrapeRecipe: async (_, { url }) => {
+    scrapeRecipe: async(_: any, { url }: IScrapeRecipeInput) => {
       try {
         const scrapedRecipe = await scrapeMarmiton(url);
         return scrapedRecipe;

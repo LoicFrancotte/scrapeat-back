@@ -5,18 +5,19 @@ import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import mongoose from "mongoose";
 import passport from "passport";
-import FacebookStrategy from "passport-facebook";
-import express from "express";
 import session from "express-session";
 import http from "http";
-import cors from "cors";
 import pkg from "body-parser";
 const { json } = pkg;
-// import "dotenv/config";
-// import "dotenv/config";
 import dotenv from "dotenv";
-import { createServer } from "http";
-import GoogleStrategy from "passport-google-oauth20";
+import { Strategy as FacebookStrategy, Profile as FacebookProfile, StrategyOption } from 'passport-facebook';
+import { Strategy as GoogleStrategy, Profile as GoogleProfile } from "passport-google-oauth20";
+import { Request, Response, NextFunction } from "express";
+import express from "express";
+import cors from "cors";
+import { CorsRequest } from "cors";
+import { Profile } from 'passport';
+import { VerifyCallback } from 'passport-oauth2';
 
 import typeDefs from "./graphql/typeDefs.js";
 import resolvers from "./graphql/resolvers.js";
@@ -24,6 +25,7 @@ import resolvers from "./graphql/resolvers.js";
 import User from "./models/userModels.js";
 
 const PORT = process.env.PORT;
+
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -39,16 +41,19 @@ interface MyContext {
   token?: String;
 }
 
-const facebookOptions = {
-  clientID: process.env.FACEBOOK_APP_ID,
-  clientSecret: process.env.FACEBOOK_APP_SECRET,
-  callbackURL: process.env.FACEBOOK_CALLBACK_URL,
-  // callbackURL:
-  //   "https://recipe-scrapping-app-backend-us9cy.ondigitalocean.app/auth/facebook/callback",  //  [DELETE THIS LINE]
+const facebookOptions: StrategyOption = {
+  clientID: process.env.FACEBOOK_APP_ID as string,
+  clientSecret: process.env.FACEBOOK_APP_SECRET as string,
+  callbackURL: process.env.FACEBOOK_CALLBACK_URL as string,
   profileFields: ["id", "email", "first_name", "last_name"],
 };
 
-const facebookCallback = async (accessToken, refreshToken, profile, done) => {
+const facebookCallback = async (
+  accessToken: string,
+  refreshToken: string,
+  profile: Profile,
+  done: VerifyCallback
+) => {
   const users = await User.find();
   const matchingUser = users.find((user) => user.facebookId === profile.id);
   if (matchingUser) {
@@ -57,8 +62,8 @@ const facebookCallback = async (accessToken, refreshToken, profile, done) => {
   }
   const newUser = await User.create({
     facebookId: profile.id,
-    firstName: profile.name.givenName,
-    lastName: profile.name.familyName,
+    firstName: profile.name?.givenName || "",
+    lastName: profile.name?.familyName || "",
     email: profile.emails && profile.emails[0] && profile.emails[0].value,
   });
   done(null, newUser);
@@ -69,13 +74,17 @@ passport.use(new FacebookStrategy(facebookOptions, facebookCallback));
 //Google
 
 const googleOptions = {
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: process.env.GOOGLE_CALLBACK_URL,
-  // callbackURL: "https://recipe-scrapping-app-backend-us9cy.ondigitalocean.app/auth/google/callback",  //  [DELETE THIS LINE]
+  clientID: process.env.GOOGLE_CLIENT_ID as string,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+  callbackURL: process.env.GOOGLE_CALLBACK_URL as string,
 };
 
-const googleCallback = async (accessToken, refreshToken, profile, done) => {
+const googleCallback = async (
+  accessToken: string,
+  refreshToken: string,
+  profile: GoogleProfile,
+  done: VerifyCallback
+) => {
   const users = await User.find();
   const matchingUser = users.find((user) => user.googleId === profile.id);
   if (matchingUser) {
@@ -84,8 +93,8 @@ const googleCallback = async (accessToken, refreshToken, profile, done) => {
   }
   const newUser = await User.create({
     googleId: profile.id,
-    firstName: profile.name.givenName,
-    lastName: profile.name.familyName,
+    firstName: profile.name?.givenName || "",
+    lastName: profile.name?.familyName || "",
     email: profile.emails && profile.emails[0] && profile.emails[0].value,
   });
   done(null, newUser);
@@ -93,11 +102,11 @@ const googleCallback = async (accessToken, refreshToken, profile, done) => {
 
 passport.use(new GoogleStrategy(googleOptions, googleCallback));
 
-passport.serializeUser((user, done) => {
-  done(null, user.id);
+passport.serializeUser((user: any, done) => {
+  done(null, user._id);
 });
 
-passport.deserializeUser(async (id, done) => {
+passport.deserializeUser(async (id: any, done) => {
   try {
     const user = await User.findById(id);
     done(null, user);
@@ -118,13 +127,13 @@ mongoose.connection.once("open", () => {
 
 const app = express();
 
-app.get("/health", (req, res) => {
+app.get("/health", (req: Request, res: Response) => {
   res.status(200).send("OK");
 });
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET as string,
     resave: false,
     saveUninitialized: true,
   })
@@ -140,10 +149,8 @@ app.get(
 app.get(
   "/auth/facebook/callback",
   passport.authenticate("facebook", {
-    successRedirect:
-      "https://recipe-scrapping-app-backend-us9cy.ondigitalocean.app/graphql", //  [NOTE]: This redirects should also be inside a .env so they can change by build
-    failureRedirect:
-      "https://recipe-scrapping-app-backend-us9cy.ondigitalocean.app/graphql", //  [NOTE]: This redirects should also be inside a .env so they can change by build
+    successRedirect: process.env.FACEBOOK_SUCCESS_REDIRECT,
+    failureRedirect: process.env.FACEBOOK_FAILURE_REDIRECT,
   })
 );
 //Google
@@ -154,10 +161,8 @@ app.get(
 app.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    successRedirect:
-      "https://recipe-scrapping-app-backend-us9cy.ondigitalocean.app/graphql", //  [NOTE]: This redirects should also be inside a .env so they can change by build
-    failureRedirect:
-      "https://recipe-scrapping-app-backend-us9cy.ondigitalocean.app/graphql", //  [NOTE]: This redirects should also be inside a .env so they can change by build
+    successRedirect: process.env.GOOGLE_SUCCESS_REDIRECT,
+    failureRedirect: process.env.GOOGLE_FAILURE_REDIRECT,
   })
 );
 
@@ -181,6 +186,6 @@ app.use(
 );
 
 await new Promise<void>((resolve) =>
-  httpServer.listen({ port: PORT }, resolve)
+  httpServer.listen({ port: 3001 }, resolve)
 );
 console.log(`🚀 Server ready at http://localhost:3001/graphql`);
