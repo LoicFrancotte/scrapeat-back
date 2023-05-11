@@ -1,17 +1,19 @@
 import jwt from "jsonwebtoken";
 import axios from "axios";
-import { Document } from "mongoose";
 import Recipe from "../models/recipeModels.js";
 import { scrapeMarmiton } from "../script/scr.js";
 import User from "../models/userModels.js";
 
 export interface IUser {
   id: string;
-  accountId: string;
+  facebookId?: string;
+  googleId?: string;
   username: string;
   email: string;
+  accountId?: string;
   name: string;
   provider: string;
+  recipes?: string[];
 }
 
 interface IRecipeInput {
@@ -52,7 +54,10 @@ const resolvers = {
   Query: {
     getUser: async (_: any, { id }: { id: string }) => {
       try {
-        const user = await User.findById(id);
+        const user = await User.findById(id).populate({
+          path: "recipes",
+          match: { ingredients: { $ne: null } },
+        });
         return user;
       } catch (error) {
         throw new Error(error);
@@ -66,7 +71,7 @@ const resolvers = {
         throw new Error(error);
       }
     },
-    getRecipe: async (_: any, {id}: { id: string }) => {
+    getRecipe: async (_: any, { id }: { id: string }) => {
       try {
         const recipe = await Recipe.findById(id);
         return recipe;
@@ -113,10 +118,10 @@ const resolvers = {
           throw new Error("Failed to authenticate with Facebook.");
         }
         const { id, email, first_name, last_name } = data;
-        let user = await User.findOne({ accountId: id });
+        let user = await User.findOne({ facebookId: id });
         if (!user) {
           user = await User.create({
-            accountId: id,
+            facebookId: id,
             username: `${first_name} ${last_name}`,
             email,
             name: `${first_name} ${last_name}`,
