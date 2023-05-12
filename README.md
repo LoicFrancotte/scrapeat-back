@@ -2,6 +2,8 @@
 
 This project is a backend for a recipe scrapping application, built with Node.js, Express, GraphQL, Apollo Server, MongoDB, Faker.js, and Cheerio. The application allows a user to insert the URL of a cooking recipe website, and the script retrieves only the information relevant to that recipe on the website, removing any irrelevant information. The user will receive the recipe without any unnecessary information from the original website and can save it to their "recipe book."
 
+Please note that this application is designed to work only with links from the following websites: marmiton.org, cuisineaz.com, and cuisineactuelle.fr.
+
 ## Database Schema
 
 ![Database Schema](https://imgur.com/StaIMt0.png)
@@ -18,7 +20,7 @@ This project is a backend for a recipe scrapping application, built with Node.js
 ## Live Application
 
 You can try the live application at the following address:
-[Live App !](https://scrap-eat-one.vercel.app/)
+[Live App!](https://scrap-eat-one.vercel.app/)
 
 ## Frontend Repository
 
@@ -27,7 +29,7 @@ The frontend source code is located in the following repository:
 
 ## Features
 
-- Insert the URL of a cooking recipe website to extract relevant information
+- Insert the URL of a cooking recipe website from marmiton.org, cuisineaz.com, or cuisineactuelle.fr to extract relevant information
 - Remove irrelevant information from the recipe webpage
 - Save recipes to a "recipe book"
 - User authentication via Facebook, Google, and Apple
