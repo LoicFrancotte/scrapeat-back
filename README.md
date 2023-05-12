@@ -2,7 +2,7 @@
 
 This project is a backend for a recipe scrapping application, built with Node.js, Express, GraphQL, Apollo Server, MongoDB, Faker.js, and Cheerio. The application allows a user to insert the URL of a cooking recipe website, and the script retrieves only the information relevant to that recipe on the website, removing any irrelevant information. The user will receive the recipe without any unnecessary information from the original website and can save it to their "recipe book."
 
-Please note that this application is designed to work only with links from the following websites: marmiton.org, cuisineaz.com, and cuisineactuelle.fr.
+Please note that this application is designed to work only with links from the following websites: [Marmiton](marmiton.org), [CuisineAZ](cuisineaz.com), and [Cuisine Actuelle](cuisineactuelle.fr).
 
 ## Database Schema
 
@@ -31,7 +31,7 @@ The frontend source code is located in the following repository:
 
 ## Features
 
-- Insert the URL of a cooking recipe website from marmiton.org, cuisineaz.com, or cuisineactuelle.fr to extract relevant information
+- Insert the URL of a cooking recipe website from [Marmiton](marmiton.org), [CuisineAZ](cuisineaz.com), and [Cuisine Actuelle](cuisineactuelle.fr) to extract relevant information
 - Remove irrelevant information from the recipe webpage
 - Save recipes to a "recipe book"
 - User authentication via Facebook, Google, and Apple
