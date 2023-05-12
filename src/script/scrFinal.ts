@@ -106,7 +106,7 @@ export async function scrapeRecipe(url: string): Promise<Recipe> {
   } else if (url.includes('cuisineactuelle.fr')) {
     return scrapeCuisineActuelle($);
   } else {
-    throw new Error('URL not recognized. Only Marmiton and CuisineAZ URLs are accepted.');
+    throw new Error('URL not recognized. Only Marmiton, CuisineAZ and Cuisine Actuelle URLs are accepted.');
   }
 }
 
