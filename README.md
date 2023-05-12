@@ -21,6 +21,7 @@ Please note that this application is designed to work only with links from the f
 
 You can try the live application at the following address:
 [Live App!](https://scrap-eat-one.vercel.app/)
+![screen](https://imgur.com/LFtA9PT.png)
 
 ## Frontend Repository
 
