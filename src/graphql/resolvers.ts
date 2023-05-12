@@ -13,7 +13,15 @@ export interface IUser {
   accountId?: string;
   name: string;
   provider: string;
-  recipes?: string[];
+  recipes?: IRecipe[];
+}
+
+interface IRecipe {
+  user: string;
+  title: string;
+  ingredients: string[];
+  ustensiles: string[];
+  steps: string[];
 }
 
 interface IRecipeInput {
@@ -65,8 +73,11 @@ const resolvers = {
     },
     getUsers: async () => {
       try {
-        const users = await User.find();
-        return users;
+        const users = await User.find().populate('recipes') as IUser[];
+        const filteredUsers = users.filter(user =>
+          user.recipes?.every(recipe => recipe.title != null)
+        );
+        return filteredUsers;
       } catch (error) {
         throw new Error(error);
       }
