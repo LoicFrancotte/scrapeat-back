@@ -1,6 +1,6 @@
 # Recipe-Scrapping-App
 
-This project is a backend for a recipe scrapping application, built with Node.js, Express, GraphQL, Apollo Server, MongoDB, Faker.js, and Puppeteer. The application allows a user to insert the URL of a cooking recipe website, and the script retrieves only the information relevant to that recipe on the website, removing any irrelevant information. The user will receive the recipe without any unnecessary information from the original website and can save it to their "recipe book."
+This project is a backend for a recipe scrapping application, built with Node.js, Express, GraphQL, Apollo Server, MongoDB, Faker.js, and Cheerio. The application allows a user to insert the URL of a cooking recipe website, and the script retrieves only the information relevant to that recipe on the website, removing any irrelevant information. The user will receive the recipe without any unnecessary information from the original website and can save it to their "recipe book."
 
 ## Database Schema
 
@@ -69,6 +69,10 @@ To populate the database with fake data using the `faker.js` script, follow thes
 
 - `cd dist`
 
-3. Run the `seedDb.js` script:
+3. Navigate to the `script` directory:
 
-- `node script/seedDb.js`
+- `cd script`
+
+4. Run the `seedDb.js` script:
+
+- `node seedDb.js`

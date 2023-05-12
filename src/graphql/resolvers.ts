@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import axios from "axios";
 import Recipe from "../models/recipeModels.js";
-import { scrapeMarmiton } from "../script/scr.js";
+import { scrapeRecipe } from "../script/scrFinal.js";
 import User from "../models/userModels.js";
 
 export interface IUser {
@@ -187,7 +187,7 @@ const resolvers = {
     },
     scrapeRecipe: async(_: any, { url }: IScrapeRecipeInput) => {
       try {
-        const scrapedRecipe = await scrapeMarmiton(url);
+        const scrapedRecipe = await scrapeRecipe(url);
         return scrapedRecipe;
       } catch (error) {
         throw new Error(error);
