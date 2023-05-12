@@ -110,18 +110,18 @@ export async function scrapeRecipe(url: string): Promise<Recipe> {
   }
 }
 
-const testUrlMarmiton = 'https://www.marmiton.org/recettes/recette_rougail-saucisse_12916.aspx';
-const testUrlCuisineAZ = 'https://www.cuisineaz.com/recettes/rougail-saucisse-au-cookeo-98246.aspx';
-const testUrlCuisineActuelle = 'https://www.cuisineactuelle.fr/recettes/gateau-nature-sans-aeuf-196846';
+// const testUrlMarmiton = 'https://www.marmiton.org/recettes/recette_rougail-saucisse_12916.aspx';
+// const testUrlCuisineAZ = 'https://www.cuisineaz.com/recettes/rougail-saucisse-au-cookeo-98246.aspx';
+// const testUrlCuisineActuelle = 'https://www.cuisineactuelle.fr/recettes/gateau-nature-sans-aeuf-196846';
 
-scrapeRecipe(testUrlMarmiton)
-  .then(recipe => console.log(recipe))
-  .catch(err => console.error(err));
+// scrapeRecipe(testUrlMarmiton)
+//   .then(recipe => console.log(recipe))
+//   .catch(err => console.error(err));
 
-scrapeRecipe(testUrlCuisineAZ)
-  .then(recipe => console.log(recipe))
-  .catch(err => console.error(err));
+// scrapeRecipe(testUrlCuisineAZ)
+//   .then(recipe => console.log(recipe))
+//   .catch(err => console.error(err));
 
-scrapeRecipe(testUrlCuisineActuelle)
-  .then(recipe => console.log(recipe))
-  .catch(err => console.error(err));
+// scrapeRecipe(testUrlCuisineActuelle)
+//   .then(recipe => console.log(recipe))
+//   .catch(err => console.error(err));
