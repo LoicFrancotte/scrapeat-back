@@ -1,6 +1,5 @@
 import axios from 'axios';
-import cheerio, { Cheerio, Element } from 'cheerio';
-import { CheerioAPI } from 'cheerio';
+import cheerio, { Element, CheerioAPI } from 'cheerio';
 
 interface Recipe {
   title: string;
@@ -96,7 +95,9 @@ export async function scrapeCuisineActuelle($: CheerioAPI): Promise<Recipe> {
 }
 
 export async function scrapeRecipe(url: string): Promise<Recipe> {
-  const { data: html } = await axios.get(url, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' } });
+  const { data: html } = await axios.get(url,
+    { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' } }
+  );
   const $ = cheerio.load(html);
 
   if (url.includes('marmiton.org')) {
